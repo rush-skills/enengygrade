@@ -1,0 +1,124 @@
+<div class="container">
+  <div class="row" style="padding-top: 50px;">
+
+    <form action="" class="form-inline calculate-form">
+      <div class="col-xs-2 col-md-2">
+        <label for="location" class="control-label">Location</label>
+        <input name="area" type="text" value='' class="form-control" id="location" placeholder="Okhla, Delhi">
+      </div>
+      <div class="form-group col-xs-2 col-md-2">
+        <label for="bill" class="control-label">Monthly Bill (Rs.)</label>
+        <input name="bill" type="text" value='' class="form-control" id="bill" placeholder="10000">
+      </div>
+      <div class="form-group col-xs-2 col-md-2">
+        <label for="load" class="control-label">Load (kW)</label>
+        <input name="load" type="text" value='' class="form-control" id="load" placeholder="5">
+      </div>
+      <div class="form-group col-xs-2 col-md-2">
+        <label for="area" class="control-label">Roof Area (sq.ft.)</label>
+        <input name="area" type="text" value='' class="form-control" id="area" placeholder="1000">
+      </div>
+      <div class="form-group col-xs-2 col-md-2">
+        <label for="type" class="control-label">Connection Type</label>
+        <select name="type" id="type" class="form-control" style="width: 100%">
+          <option selected value="res">Residential</option>
+          <option value="ind">Industrial</option>
+          <option value="com">Commercial</option>
+        </select>
+      </div>
+      <div class="form-group col-xs-2 col-md-2">
+        <button  class="btn btn-primary form-control" id="calculate" style="margin-top: 18px;">Calculate</button>
+      </div>
+    </form>
+  </div>
+  <div class="row" id="after-calc" style="display: none;">
+    <img src="/1.png" alt=""  style="padding: 50px;width: 100%;max-width:100%;height:auto;">
+    <br><br>
+    <h1>Interested in getting setup? Fill in the details below and we will reach out to you</h1>
+    <form class="form-horizontal" id="lead-form">
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="pwd">Name:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="name" placeholder="Doctor Strange">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="email">Email:</label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" id="email" placeholder="john@doe.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="pwd">Contact Number:</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" id="contact" placeholder="9876543210">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+      </div>
+    </form>
+    <div class="after-lead" style="display: none;">
+      <br><br>
+      <h1>Thank you, you request have been recorded and one of our agents will get back to you shortly.</h1>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+  function initMap(){
+    lat = <%= @lat %>;
+    lng = <%= @lng %>;
+    var latlng = {lat: parseFloat(lat), lng: parseFloat(lng)};
+    var geocoder = new google.maps.Geocoder;
+    geocoder.geocode({'location': latlng}, function(results, status) {
+      if (status === 'OK') {
+        if (results[1]) {
+          addr = results[1].formatted_address;
+          $("form.calculate-form input#location").val(addr);
+        } else {
+          window.alert('No results found');
+        }
+      } else {
+        window.alert('Geocoder failed due to: ' + status);
+      }
+    });
+
+  }
+  $(document).on('ready',function(){
+    $("form.calculate-form").submit(function(e){
+      e.preventDefault();
+      $("#after-calc").show();
+    });
+    $("#lead-form").submit(function(e){
+      e.preventDefault();
+      $(".after-lead").show();
+      data = {
+        "lead": {
+          name: $("form#lead-form input#name").val(),
+          email: $("form#lead-form input#email").val(),
+          phone: $("form#lead-form input#contact").val(),
+          location: $("form.calculate-form input#location").val(),
+          lat: <%= @lat %>,
+          lng: <%= @lng %>,
+          bill: $("form.calculate-form input#bill").val(),
+          load: $("form.calculate-form input#load").val(),
+          area: $("form.calculate-form input#area").val(),
+          area_type: $("form.calculate-form select#type :selected").text()
+        }
+      }
+      $.ajax({
+        type: "POST",
+        url: "/leads",
+        data: data,
+        success: function(){
+          console.log("Success");
+        }
+      });
+    })
+  })
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaewk0hcgMCtAQkVfeBnCtiUTbYRXEJkw&callback=initMap">
+</script>

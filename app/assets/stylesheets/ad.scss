@@ -1,0 +1,71 @@
+// Place all the styles related to the ad controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.ad-box{
+  width: 320px;
+  height: 320px;
+  background: #1e3c72; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #1e3c72 , #2a5298); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #1e3c72 , #2a5298); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+  color: #eee;
+  text-align: center;
+  margin: 0 auto;
+  padding: 15px;
+  
+  .text-upper{
+    font-size: 32px;
+    line-height:35px;
+    display: none;
+    .amount{
+      color: #FF4081;
+      padding: 10px;
+      font-size: 36px;
+      line-height: 40px;
+      font-weight: 700;
+    }
+    small{
+      font-size: 12px;
+      line-height: 14px;
+    }
+  }
+  .cta{
+    margin-top: 10px;
+    background: transparent;
+    color: #eee;
+    display: none;
+  }
+  .text-upper-initial{
+    @extend .text-upper;
+    display: block;
+    padding-top: 20px;
+  }
+  .cta:hover{
+    background: transparent;
+    color: #eee;
+  }
+  .trigger{
+    @extend .cta;
+    display: block;
+    margin-top: 20px;
+  }
+  @extend .card;
+}
+
+.calculate-form{
+  text-align: center;
+}

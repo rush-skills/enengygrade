@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="ad-box">
+        <div class="text-upper-initial">
+          Did you know you can save upto
+          <div class="amount">
+            70%
+          </div>
+          on your electricity bill?
+        </div>
+
+        <div class="btn btn-xl btn-default trigger">
+          How?
+        </div>
+
+        <div class="text-upper">
+          You could save upto
+          <div class="amount">
+            Rs. 10000
+          </div>
+          on your electricity bill by switching to solar!
+          <small><br>Based on your location and general assumptions.</small>
+        </div>
+
+        <a href="/calculate" class="btn btn-link the-link">
+          <div class="btn btn-xl btn-default cta">
+            Find out how
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).on('ready',function(){
+    $(".trigger").click(function(){
+      $(".trigger").hide();
+      $(".text-upper-initial").hide();
+      $(".text-upper").show();
+      $(".cta").show();
+      var startPos;
+      var geoSuccess = function(position) {
+        startPos = position;
+        lat = startPos.coords.latitude;
+        lng = startPos.coords.longitude;
+        link = "/calculate?lat="+lat+"&lng="+lng;
+        $(".the-link").attr("href",link);
+
+//        document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+//        document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+      };
+      navigator.geolocation.getCurrentPosition(geoSuccess);
+    });
+  });
+</script>
